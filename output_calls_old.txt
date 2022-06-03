@@ -1,0 +1,62 @@
+Fri Jun  3 12:35:58 2022    output.dat
+
+         64949479 function calls in 133.417 seconds
+
+   Ordered by: call count
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+ 15051782    0.681    0.000    0.681    0.000 {method 'append' of 'list' objects}
+ 13626799    0.671    0.000    0.671    0.000 {built-in method builtins.len}
+  6305681    1.259    0.000    1.259    0.000 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:20(<genexpr>)
+  6101824    3.465    0.000    3.465    0.000 {method 'split' of 'str' objects}
+  5898165   27.686    0.000   27.686    0.000 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:38(<listcomp>)
+  3660930    0.615    0.000    0.615    0.000 {built-in method builtins.iter}
+  3660930    0.954    0.000    1.569    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/numpy/lib/function_base.py:346(iterable)
+  1830465    0.531    0.000    0.531    0.000 {built-in method numpy.asarray}
+  1222773    0.226    0.000    0.226    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/netCDF4/utils.py:34(_find_dim)
+   814088    0.094    0.000    0.094    0.000 {built-in method builtins.isinstance}
+   813540    0.267    0.000    0.267    0.000 {built-in method numpy.empty}
+   610155    0.158    0.000    0.158    0.000 {method 'isunlimited' of 'netCDF4._netCDF4.Dimension' objects}
+   610155    0.095    0.000    0.095    0.000 {method 'ravel' of 'numpy.ndarray' objects}
+   610155    0.104    0.000    0.104    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/netCDF4/utils.py:361(<genexpr>)
+   407318    0.035    0.000    0.035    0.000 {built-in method posix.fspath}
+   406771    0.459    0.000    1.866    0.000 {built-in method builtins.sum}
+   406770    0.077    0.000    0.077    0.000 {method 'indices' of 'slice' objects}
+   406770    0.083    0.000    0.131    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/numpy/ma/core.py:6377(isMaskedArray)
+   203659    0.022    0.000    0.022    0.000 {method 'join' of 'str' objects}
+   203659    0.035    0.000    0.035    0.000 {method 'rfind' of 'str' objects}
+   203659    0.054    0.000    0.054    0.000 {method 'startswith' of 'str' objects}
+   203659    0.038    0.000    0.055    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/posixpath.py:41(_get_sep)
+   203659    0.160    0.000    0.265    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/posixpath.py:100(split)
+   203659    0.338    0.000    0.510    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/posixpath.py:334(normpath)
+   203385    0.047    0.000    0.047    0.000 {method 'count' of 'list' objects}
+   203385    0.045    0.000    0.045    0.000 {built-in method builtins.max}
+   203385    0.043    0.000    0.043    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/netCDF4/utils.py:205(<genexpr>)
+   203385    4.728    0.000    8.021    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/netCDF4/utils.py:80(_StartCountStride)
+   203385    0.470    0.000    0.596    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/netCDF4/utils.py:450(_out_array_shape)
+   130972    0.077    0.000    0.077    0.000 {built-in method _codecs.utf_8_decode}
+   130972    0.046    0.000    0.123    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/codecs.py:319(decode)
+     2192    0.192    0.000    0.192    0.000 {method 'createDimension' of 'netCDF4._netCDF4.Dataset' objects}
+      547    1.238    0.002    1.238    0.002 {method 'close' of 'netCDF4._netCDF4.Dataset' objects}
+      547    0.000    0.000    0.000    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/site-packages/netCDF4/utils.py:478(_tostr)
+      274    0.113    0.000    0.116    0.000 {method 'createVariable' of 'netCDF4._netCDF4.Dataset' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+        2    0.000    0.000    0.000    0.000 {built-in method _locale.nl_langinfo}
+        2    0.000    0.000    0.000    0.000 {built-in method io.open}
+        2    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+        2    0.000    0.000    0.000    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/_bootlocale.py:33(getpreferredencoding)
+        2    0.000    0.000    0.000    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/codecs.py:260(__init__)
+        2    0.000    0.000    0.000    0.000 /Users/seanpluemer/opt/anaconda3/envs/reshapeSpectrumData/lib/python3.9/codecs.py:309(__init__)
+        1    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+        1    0.000    0.000  133.992  133.992 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.865    0.865  133.992  133.992 <string>:1(<module>)
+        1    0.000    0.000    0.576    0.576 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:21(<listcomp>)
+        1    7.301    7.301  133.128  133.128 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:5(main)
+        1   49.074   49.074  122.564  122.564 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:18(extract_data)
+        1    0.124    0.124    0.488    0.488 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:67(first_run)
+        1   28.546   28.546   39.395   39.395 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:58(save_nc_fast)
+        1    2.400    2.400    2.774    2.774 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:84(readinfiledata)
+        1    0.000    0.000    0.000    0.000 /Users/seanpluemer/Documents/GitHub/reshapeSpectrumData/main.py:95(generate_locations)
+
+
