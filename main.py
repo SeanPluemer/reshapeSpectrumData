@@ -2,16 +2,26 @@ spec_file_name = "Spec2D_"
 from netCDF4 import Dataset
 
 def main():
-    locations = generate_locations("Spec2D_202001.dat")
+    locations = generate_locations("Spec2D_197901.dat.recomp")
     number_points = len(locations)
     first_run(number_points)
     save_inital_var(locations)
-    for year in range(2020,2021 ):
-        for month in range(1,2):
+    full_spec_data = []
+    full_time_data = []
+    for year in range(1979,1980 ):
+        for month in range(1,13):
             print("working on: ", year, month)
             month_use = str("{:02d}".format(month))
-            file_data = readinfiledata(spec_file_name + str(year) + month_use + ".dat")
-            extract_data(locations,file_data)
+            file_data = readinfiledata(spec_file_name + str(year) + month_use + ".dat.recomp")
+            tempdata, temptime = extract_data(locations,file_data)
+            full_spec_data.append(tempdata)
+            full_time_data.append(temptime)
+        full_time_data,full_spec_data =  remove_duplicates(full_spec_data,locations,full_time_data)
+        save_nc_fast(full_spec_data,locations, full_time_data)
+        #the structure of the full_spec_data is
+        #[month][location][y][x]
+
+
 
 def save_inital_var(location):
     locations=[]
@@ -71,19 +81,45 @@ def extract_data(locations, data):
     hello = []
     for i in range(len(time_list)):
         hello.append(time_list[i].split()[0])
-    save_nc_fast(spec_data,locations,total_time, hello)
+    #spec_data is the list of data at the specific locations, East = list(127/x,y)
+    #locations is the list of locations, east (127)
+    #total time is the count of how many hours in that month
+    #hello is the actual list of times
+    return spec_data, hello
 
-def save_nc_fast(data,locations, time, time_list):
-    print("saving")
+    #so i am thinking it might be worth getting the entire run and then saving it?
+def flatten(xss):
+    return [x for xs in xss for x in xs]
+
+def remove_duplicates(data,locations,time_list):
+    for month in range(1,len(time_list)):
+        for location in range(len(locations)):
+            del data[month][location][:len(locations)] #note, when this is used it deletes the orig data from main
+        time_list[month].pop(0)
+    return time_list, data
+def save_nc_fast(data,locations, time_list):
+
     import numpy as np
-    times = np.array(time_list, dtype=object)
+    flat_list = []
+    for xs in time_list:
+        for x in xs:
+            flat_list.append(x)
+    times = np.array(flat_list, dtype=object)
+    j = 0
 
     for i in range(len(locations)):
         infile = Dataset("files/location" + str(i) + ".nc", "a")
         infile['Time'][:] = times
-        for j in range(time):
-            infile['SpecData'][:,:,j] = data[i][j]
+        time = 0
+        for month in range(len(time_list)):
+            for idk in range(len(data[month][i])):
+                    infile['SpecData'][:,:,time] = data[month][i][idk]
+                    time+=1
+                    print(i, month, time, idk)
+
+        print( i,month, time, idk)
         infile.close()
+
 
 def first_run(number_locations):
     for i in range(number_locations+1):
@@ -92,14 +128,15 @@ def first_run(number_locations):
 
         long_dim = ncfile.createDimension('long', 1)  # longitude axis
         lat_dim = ncfile.createDimension('lat', 1)
-        x_dim = ncfile.createDimension("x", 24) #36 for gom
-        y_dim = ncfile.createDimension("y", 29)
         time_dim = ncfile.createDimension('time', None)
         depth_dim = ncfile.createDimension('depth', 1)
         freq_dim = ncfile.createDimension('freq', 29)
         degree_dim = ncfile.createDimension('degree', 24) #29 for gom
+        x_dim = ncfile.createDimension("x", 24)  # 36 for gom
 
+        y_dim = ncfile.createDimension("y", 29)  # this is setting the expected number of "data points" per month
         spec_var = ncfile.createVariable("SpecData", 'f4', ("x", "y", "time"))
+
         Long_var = ncfile.createVariable("Long", 'f4', ("long"))
         Lat_var = ncfile.createVariable("Lat", 'f4', ("lat"))
         Freq_var = ncfile.createVariable("Freq", 'f4', ("freq"))
@@ -141,6 +178,6 @@ if __name__ == '__main__':
         p = pstats.Stats("output.dat", stream=f)
         p.sort_stats("time").print_stats()
 
-    with open("output_calls_old.txt", "w") as f:
+    with open("output_calls.txt", "w") as f:
         p = pstats.Stats("output.dat", stream=f)
         p.sort_stats("calls").print_stats()
