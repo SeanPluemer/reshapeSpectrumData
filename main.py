@@ -8,7 +8,8 @@ def main():
     save_inital_var(locations)
     full_spec_data = []
     full_time_data = []
-    for year in range(1979,1980 ):
+    time_location = 0
+    for year in range(1979,1981 ):
         for month in range(1,13):
             print("working on: ", year, month)
             month_use = str("{:02d}".format(month))
@@ -17,10 +18,11 @@ def main():
             full_spec_data.append(tempdata)
             full_time_data.append(temptime)
         full_time_data,full_spec_data =  remove_duplicates(full_spec_data,locations,full_time_data)
-        save_nc_fast(full_spec_data,locations, full_time_data)
+        time_location = save_nc_fast(full_spec_data,locations, full_time_data, time_location)
         #the structure of the full_spec_data is
         #[month][location][y][x]
 
+    print("he")
 
 
 def save_inital_var(location):
@@ -97,7 +99,7 @@ def remove_duplicates(data,locations,time_list):
             del data[month][location][:len(locations)] #note, when this is used it deletes the orig data from main
         time_list[month].pop(0)
     return time_list, data
-def save_nc_fast(data,locations, time_list):
+def save_nc_fast(data,locations, time_list,time_location):
 
     import numpy as np
     flat_list = []
@@ -106,11 +108,12 @@ def save_nc_fast(data,locations, time_list):
             flat_list.append(x)
     times = np.array(flat_list, dtype=object)
     j = 0
+    time = time_location
 
     for i in range(len(locations)):
         infile = Dataset("files/location" + str(i) + ".nc", "a")
         infile['Time'][:] = times
-        time = 0
+        time = time_location
         for month in range(len(time_list)):
             for idk in range(len(data[month][i])):
                     infile['SpecData'][:,:,time] = data[month][i][idk]
@@ -120,6 +123,7 @@ def save_nc_fast(data,locations, time_list):
         print( i,month, time, idk)
         infile.close()
 
+    return(time)
 
 def first_run(number_locations):
     for i in range(number_locations+1):
