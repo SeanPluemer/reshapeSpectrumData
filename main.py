@@ -2,28 +2,60 @@ spec_file_name = "Spec2D_"
 from netCDF4 import Dataset
 
 def main():
-    locations = generate_locations("Spec2D_197901.dat.recomp")
+    locations = generate_locations("Spec2D_197901.dat.recomp") #so find the list of locations
     number_points = len(locations)
-    first_run(number_points)
+    first_run(number_points) #generate the "file and sizes"
     save_inital_var(locations)
-    full_spec_data = []
-    full_time_data = []
+
     time_location = 0
     for year in range(1979,1981 ):
-        for month in range(1,13):
+        full_spec_data = []
+        full_time_data = []
+        for month in range(1,4):
+
             print("working on: ", year, month)
             month_use = str("{:02d}".format(month))
             file_data = readinfiledata(spec_file_name + str(year) + month_use + ".dat.recomp")
             tempdata, temptime = extract_data(locations,file_data)
             full_spec_data.append(tempdata)
             full_time_data.append(temptime)
-        full_time_data,full_spec_data =  remove_duplicates(full_spec_data,locations,full_time_data)
+
+        #full_time_data,full_spec_data =  remove_duplicates(full_spec_data,locations,full_time_data)
         time_location = save_nc_fast(full_spec_data,locations, full_time_data, time_location)
         #the structure of the full_spec_data is
         #[month][location][y][x]
 
     print("he")
 
+def save_nc_fast(data,locations, time_list,time_location):
+    import numpy as np
+    flat_list = []
+    for xs in time_list:
+        for x in xs:
+            flat_list.append(x)
+    times = np.array(flat_list, dtype=object)
+    j = 0
+    time = time_location
+
+    for i in range(len(locations)):
+        infile = Dataset("files/location" + str(i) + ".nc", "a")
+
+        time = time_location
+        for asdf in range(len(times)):
+            infile['Time'][time] = times[asdf]
+            time+=1
+        time = time_location
+
+        for month in range(len(time_list)):
+            for idk in range(len(data[month][i])):
+                    infile['SpecData'][:,:,time] = data[month][i][idk]
+                    time+=1
+                    print(i, month, time, idk)
+
+
+        infile.close()
+
+    return(time)
 
 def save_inital_var(location):
     locations=[]
@@ -96,34 +128,10 @@ def flatten(xss):
 def remove_duplicates(data,locations,time_list):
     for month in range(1,len(time_list)):
         for location in range(len(locations)):
-            del data[month][location][:len(locations)] #note, when this is used it deletes the orig data from main
+            del data[month][location][:29] #note, when this is used it deletes the orig data from main
         time_list[month].pop(0)
     return time_list, data
-def save_nc_fast(data,locations, time_list,time_location):
 
-    import numpy as np
-    flat_list = []
-    for xs in time_list:
-        for x in xs:
-            flat_list.append(x)
-    times = np.array(flat_list, dtype=object)
-    j = 0
-    time = time_location
-
-    for i in range(len(locations)):
-        infile = Dataset("files/location" + str(i) + ".nc", "a")
-        infile['Time'][:] = times
-        time = time_location
-        for month in range(len(time_list)):
-            for idk in range(len(data[month][i])):
-                    infile['SpecData'][:,:,time] = data[month][i][idk]
-                    time+=1
-                    print(i, month, time, idk)
-
-        print( i,month, time, idk)
-        infile.close()
-
-    return(time)
 
 def first_run(number_locations):
     for i in range(number_locations+1):
